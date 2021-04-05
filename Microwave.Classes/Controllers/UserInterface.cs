@@ -83,7 +83,6 @@ namespace Microwave.Classes.Controllers
             {
                 case States.SETPOWER:
                     ResetValues();
-                    myLight.TurnOff();
                     myDisplay.Clear();
                     myState = States.READY;
                     break;
