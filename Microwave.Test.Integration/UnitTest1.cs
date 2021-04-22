@@ -7,6 +7,7 @@ namespace Microwave.Test.Integration
 		[SetUp]
 		public void Setup()
 		{
+			
 		}
 
 		[Test]
