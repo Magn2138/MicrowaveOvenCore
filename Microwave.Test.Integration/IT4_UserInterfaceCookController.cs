@@ -18,7 +18,7 @@ namespace Microwave.Test.Integration
         private PowerTube _powertube;
         private Light _light;
 
-        //Stubs
+        
         private IDoor _door;
         private IButton _powerButton;
         private IButton _timeButton;
