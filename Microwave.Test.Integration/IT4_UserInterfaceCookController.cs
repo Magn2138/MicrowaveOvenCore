@@ -43,51 +43,47 @@ namespace Microwave.Test.Integration
             _cook = new CookController(_time, _disp, _powertube);
             _uut = new UserInterface(_powerButton, _timeButton, _startcancelButton, _door, _disp, _light, _cook);
         }
+        
 
         [Test]
-        public void onPowerPressed_DefaultSelectedPower_Output()
-        {
-            _uut.OnPowerPressed(this, EventArgs.Empty); // Default værdi er 50 W - no need for Pressed event.
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains("Display shows: 50 W")));
-        }
-
-        [TestCase(1)]
-        [TestCase(3)]
-        [TestCase(8)]
-        public void onPowerPressed_SetPower_Output(int antalgangetrykket)
-        {
-			for (int i = 0; i < antalgangetrykket; i++)
-			{
-                _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-			}
-
-            _uut.OnPowerPressed(this, EventArgs.Empty);
-
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: {((antalgangetrykket)*50)} W")));
-
-        }
-        [Test]
-        public void onTimePressed_SetPowerState_Output()
+        public void onStartCancelPressed_SetTimeState_Output()
         {
             _uut.OnPowerPressed(this, EventArgs.Empty);
             _uut.OnTimePressed(this, EventArgs.Empty);
-
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: 01:00")));
-        }
-
-        [Test]
-        public void onTimePressed_SetTimeState_Output()
-        {
-            _uut.OnPowerPressed(this, EventArgs.Empty);
-            _uut.OnTimePressed(this, EventArgs.Empty);
-
             _output.ClearReceivedCalls();
 
-            _uut.OnTimePressed(this, EventArgs.Empty);
+            _uut.OnStartCancelPressed(this, EventArgs.Empty);
 
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: 02:00")));
+            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"PowerTube works with 50")));
         }
 
+        [Test]
+        public void onStartCancelPressed_setCookingState_Output()
+        {
+            _uut.OnPowerPressed(this, EventArgs.Empty);
+            _uut.OnTimePressed(this, EventArgs.Empty);
+            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+            _output.ClearReceivedCalls();
+
+            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+
+            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"PowerTube turned off")));
+        }
+
+        
+        [Test]
+        public void onDoorOpened_setCookingState_Output()
+        {
+            _uut.OnPowerPressed(this, EventArgs.Empty);
+            _uut.OnTimePressed(this, EventArgs.Empty);
+            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+            _output.ClearReceivedCalls();
+
+            _uut.OnDoorOpened(this, EventArgs.Empty);
+
+            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"PowerTube turned off")));
+          
+        }
 
 
 
