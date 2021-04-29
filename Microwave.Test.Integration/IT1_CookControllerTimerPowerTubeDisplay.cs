@@ -6,6 +6,8 @@ using NUnit.Framework;
 using Microwave.Classes.Interfaces;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Boundary;
+using System.Threading;
+using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -32,18 +34,80 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void StartCooking_PowerSetTo10_PowerTubeLogsCorrectly()
+        public void StartCooking_PowerSetTo50_PowerTubeLogsWorkingWithValue50()
         {
-            _cookController.StartCooking(10,10);
-            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 10")));
+            _cookController.StartCooking(50,60);
+            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 50")));
+        }
+
+        //[Test]
+        //public void StartCooking_PowerSetTo700_PowerTubeLogsWorkingWithValue700()
+        //{
+        //    _cookController.StartCooking(700, 60);
+        //    _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 700")));
+        //}
+
+        //[Test]
+        //public void StartCooking_TimerSetTo60_DisplayLogsNewTimeAfterTick()
+        //{
+        //    ManualResetEvent pause = new ManualResetEvent(false);
+
+        //    _timer.TimerTick += (sender, args) => pause.Set();
+
+        //    _cookController.StartCooking(50, 60);
+        //    pause.WaitOne();
+
+        //    _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("Display shows: 00:59")));
+        //}
+
+        [Test]
+        public void StartCooking_TimerExpired_PowerTubeLogsTurnOff()
+        {
+            ManualResetEvent pause = new ManualResetEvent(false);
+
+            _timer.Expired += (sender, args) => pause.Set();
+
+            _cookController.StartCooking(50, 1);
+
+            pause.WaitOne();
+
+            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube turned off")));
         }
 
         [Test]
-        public void StartCooking_TimerSetTo10_DisplayLogsNewTimeAfterTick()
+        public void StartCooking_TimerExpired_UserIterfaceIsInformedThatCookingIsDone()
         {
-            //_cookController.StartCooking(10, 10);
-            //_output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("Display shows: 00:09")));
-            Assert.Pass();
+            ManualResetEvent pause = new ManualResetEvent(false);
+
+            _timer.Expired += (sender, args) => pause.Set();
+
+            _cookController.StartCooking(50, 1);
+
+            pause.WaitOne();
+
+            _userInterface.Received(1).CookingIsDone();
+        }
+
+        [Test]
+        public void StopCooking_StopWhileRunning_PowerTubeLogsTurnOff()
+        {
+            _cookController.StartCooking(50, 60);
+            _cookController.Stop();
+            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube turned off")));
+        }
+
+        [Test]
+        public void StopCooking_StopWhileRunning_TimerIsNotCreatingTimerTickEvents()
+        {
+            ManualResetEvent pause = new ManualResetEvent(false);
+
+            _timer.TimerTick += (sender, args) => pause.Set();
+
+            _cookController.StartCooking(50, 60);
+
+            _cookController.Stop();
+
+            Assert.That(!pause.WaitOne(1100));
         }
     }
 }
