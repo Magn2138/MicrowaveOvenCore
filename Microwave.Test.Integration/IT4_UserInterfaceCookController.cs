@@ -50,8 +50,6 @@ namespace Microwave.Test.Integration
         {
             _uut.OnPowerPressed(this, EventArgs.Empty);
             _uut.OnTimePressed(this, EventArgs.Empty);
-
-
             _output.ClearReceivedCalls();
 
             _uut.OnStartCancelPressed(this, EventArgs.Empty);
@@ -65,7 +63,6 @@ namespace Microwave.Test.Integration
             _uut.OnPowerPressed(this, EventArgs.Empty);
             _uut.OnTimePressed(this, EventArgs.Empty);
             _uut.OnStartCancelPressed(this, EventArgs.Empty);
-
             _output.ClearReceivedCalls();
 
             _uut.OnStartCancelPressed(this, EventArgs.Empty);
@@ -80,7 +77,6 @@ namespace Microwave.Test.Integration
             _uut.OnPowerPressed(this, EventArgs.Empty);
             _uut.OnTimePressed(this, EventArgs.Empty);
             _uut.OnStartCancelPressed(this, EventArgs.Empty);
-
             _output.ClearReceivedCalls();
 
             _uut.OnDoorOpened(this, EventArgs.Empty);
