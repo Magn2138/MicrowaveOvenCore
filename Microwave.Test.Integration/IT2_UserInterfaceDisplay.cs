@@ -13,7 +13,6 @@ namespace Microwave.Test.Integration
     class IT2_UserInterfaceDisplay
     {
         private IUserInterface _IuserInterface;
-        //private Display _display;
         private IDisplay _display;
         private IButton _powerButton;
         private IButton _timeButton;
@@ -30,17 +29,18 @@ namespace Microwave.Test.Integration
         [SetUp]
         public void Setup()
         {
-            _powerButton = new Button();
-            _timeButton = new Button();
-            _startCancelButton = new Button();
-            _door = new Door();
+            _powerButton = Substitute.For<IButton>();
+            _timeButton = Substitute.For<IButton>();
+            _startCancelButton = Substitute.For<IButton>();
+            _door = Substitute.For<IDoor>();
             _output = Substitute.For<IOutput>();
-            _light = new Light(_output);
+            _light = Substitute.For<ILight>();
+
             _powerTube = new PowerTube(_output);
             _timer = new Timer();
             _display = new Display(_output);
-            _cookController = new CookController(_timer, _display, _powerTube);
-            
+            //_cookController = new CookController(_timer, _display, _powerTube);
+            _cookController = Substitute.For<CookController>(_timer,_display,_powerTube);
             _IuserInterface = new UserInterface(_powerButton,_timeButton,_startCancelButton,_door,_display, _light,_cookController);
 
         }
@@ -124,7 +124,6 @@ namespace Microwave.Test.Integration
             _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
             _IuserInterface.OnTimePressed(this, EventArgs.Empty);
             _IuserInterface.OnDoorOpened(this, EventArgs.Empty);
-            _IuserInterface.CookingIsDone();
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display cleared")));
         }
 
