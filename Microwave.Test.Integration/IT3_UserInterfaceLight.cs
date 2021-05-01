@@ -40,48 +40,10 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void UI_OnStartCancelPressed_SETTIME_test()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-        }
-
-        [Test]
-        public void UI_OnStartCancelPressed_COOKING_test()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
-        }
-
-        [Test]
         public void UI_OnDoorOpened_READY_test()
         {
             _door.Opened += Raise.EventWith(this, EventArgs.Empty);
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-        }
-
-        [Test]
-        public void UI_OnDoorOpened_SETPOWER_test()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-
-        }
-
-        [Test]
-        public void UI_OnDoorOpened_SETTIME_test()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-
         }
 
         [Test]
@@ -92,14 +54,6 @@ namespace Microwave.Test.Integration
             _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
 
-        [Test]
-        public void UI_CookingIsDone_COOKING_test()
-        {
-            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _timerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            _userInterface.CookingIsDone();
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
-        }
+
     }
 }

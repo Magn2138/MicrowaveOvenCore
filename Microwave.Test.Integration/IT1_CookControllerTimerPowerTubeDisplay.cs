@@ -19,8 +19,6 @@ namespace Microwave.Test.Integration
         private Display _display;
         private PowerTube _powerTube;
         private CookController _cookController;
-        
-
 
         [SetUp]
         public void Setup()
@@ -33,18 +31,13 @@ namespace Microwave.Test.Integration
             _cookController = new CookController(_timer, _display, _powerTube, _userInterface);
         }
 
-        [Test]
-        public void StartCooking_PowerSetTo50_PowerTubeLogsWorkingWithValue50()
+        [TestCase(50)]
+        [TestCase(350)]
+        [TestCase(700)]
+        public void StartCooking_PowerSetToCorrectValues_PowerTubeLogsWorkingCorrectly(int power)
         {
-            _cookController.StartCooking(50,60);
-            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 50")));
-        }
-
-        [Test]
-        public void StartCooking_PowerSetTo700_PowerTubeLogsWorkingWithValue700()
-        {
-            _cookController.StartCooking(700, 60);
-            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 700")));
+            _cookController.StartCooking(power, 60);
+            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains($"PowerTube works with {power}")));
         }
 
         [Test]

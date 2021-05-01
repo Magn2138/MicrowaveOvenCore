@@ -47,83 +47,25 @@ namespace Microwave.Test.Integration
 
 
         [Test]
-        public void OnPowerPressedReadyStateOnDisplay()
+        public void OnPowerPressed_ReadyStateOnDisplay_Output()
         {
-            _IuserInterface.OnPowerPressed(this,EventArgs.Empty);
+            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: 50 W")));
         }
 
         [Test]
-        public void OnPowerPressedSetPowerStateOnDisplay()
+        public void OnTimePressed_SetPowerStateOnDisplay_Output()
         {
-            _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
-            _IuserInterface.OnPowerPressed(this,EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: 100 W")));
-        }
-
-        [Test]
-        public void OnTimePressedSetPowerStateOnDisplay()
-        {
-            _IuserInterface.OnPowerPressed(this,EventArgs.Empty);
-            _IuserInterface.OnTimePressed(this, EventArgs.Empty);
+            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: 01:00")));
         }
 
         [Test]
-        public void OnTimePressedSetTimeStateOnDisplay()
+        public void OnStartCancelPressed_SetPowerOnDisplay_Output()
         {
-            _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
-            _IuserInterface.OnTimePressed(this, EventArgs.Empty);
-            _IuserInterface.OnTimePressed(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display shows: 02:00")));
-        }
-
-        [Test]
-        public void OnStartCancelPressedSetPowerOnDisplay()
-        {
-            _IuserInterface.OnPowerPressed(this,EventArgs.Empty);
-            _IuserInterface.OnStartCancelPressed(this,EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display cleared")));
-        }
-
-        //[Test]
-        //public void OnStartCancelPressedSetTimeDisplay()
-        //{
-        //    //Kan ikke testes
-        //}
-
-        [Test]
-        public void OnStartCancelPressedCookingOnDisplay()
-        {
-            _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
-            _IuserInterface.CookingIsDone();
-            _IuserInterface.OnStartCancelPressed(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display cleared")));
-        }
-
-        [Test]
-        public void OnDoorOpenedSetPowerOnDisplay()
-        {
-            _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
-            _IuserInterface.OnDoorOpened(this,EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display cleared")));
-        }
-
-        [Test]
-        public void OnDoorOpenedSetTimeOnDisplay()
-        {
-            _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
-            _IuserInterface.OnTimePressed(this, EventArgs.Empty);
-            _IuserInterface.OnDoorOpened(this, EventArgs.Empty);
-            _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display cleared")));
-        }
-
-        [Test]
-        public void OnDoorOpenedCookingOnDisplay()
-        {
-            _IuserInterface.OnPowerPressed(this, EventArgs.Empty);
-            _IuserInterface.OnTimePressed(this, EventArgs.Empty);
-            _IuserInterface.OnDoorOpened(this, EventArgs.Empty);
+            _powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            _startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"Display cleared")));
         }
 
