@@ -40,25 +40,25 @@ namespace Microwave.Test.Integration
             _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 50")));
         }
 
-        //[Test]
-        //public void StartCooking_PowerSetTo700_PowerTubeLogsWorkingWithValue700()
-        //{
-        //    _cookController.StartCooking(700, 60);
-        //    _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 700")));
-        //}
+        [Test]
+        public void StartCooking_PowerSetTo700_PowerTubeLogsWorkingWithValue700()
+        {
+            _cookController.StartCooking(700, 60);
+            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("PowerTube works with 700")));
+        }
 
-        //[Test]
-        //public void StartCooking_TimerSetTo60_DisplayLogsNewTimeAfterTick()
-        //{
-        //    ManualResetEvent pause = new ManualResetEvent(false);
+        [Test]
+        public void StartCooking_TimerSetTo60_DisplayLogsNewTimeAfterTick()
+        {
+            ManualResetEvent pause = new ManualResetEvent(false);
 
-        //    _timer.TimerTick += (sender, args) => pause.Set();
+            _timer.TimerTick += (sender, args) => pause.Set();
 
-        //    _cookController.StartCooking(50, 60);
-        //    pause.WaitOne();
+            _cookController.StartCooking(50, 60);
+            pause.WaitOne();
 
-        //    _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("Display shows: 00:59")));
-        //}
+            _output.Received(1).OutputLine(Arg.Is<string>(x => x.Contains("Display shows: 00:59")));
+        }
 
         [Test]
         public void StartCooking_TimerExpired_PowerTubeLogsTurnOff()
