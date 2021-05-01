@@ -12,7 +12,7 @@ namespace Microwave.Test.Integration
     class IT4_UserInterfaceCookController
     {
         private CookController _cook;
-        private UserInterface _uut;
+        private UserInterface _userinterface;
         private Timer _time;
         private Display _disp;
         private PowerTube _powertube;
@@ -41,18 +41,19 @@ namespace Microwave.Test.Integration
             _light = new Light(_output);
 
             _cook = new CookController(_time, _disp, _powertube);
-            _uut = new UserInterface(_powerButton, _timeButton, _startcancelButton, _door, _disp, _light, _cook);
+            _userinterface = new UserInterface(_powerButton, _timeButton, _startcancelButton, _door, _disp, _light, _cook);
+            _cook.UI = _userinterface;
         }
         
 
         [Test]
         public void onStartCancelPressed_SetTimeState_Output()
         {
-            _uut.OnPowerPressed(this, EventArgs.Empty);
-            _uut.OnTimePressed(this, EventArgs.Empty);
+            _userinterface.OnPowerPressed(this, EventArgs.Empty);
+            _userinterface.OnTimePressed(this, EventArgs.Empty);
             _output.ClearReceivedCalls();
 
-            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+            _userinterface.OnStartCancelPressed(this, EventArgs.Empty);
 
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"PowerTube works with 50")));
         }
@@ -60,12 +61,12 @@ namespace Microwave.Test.Integration
         [Test]
         public void onStartCancelPressed_setCookingState_Output()
         {
-            _uut.OnPowerPressed(this, EventArgs.Empty);
-            _uut.OnTimePressed(this, EventArgs.Empty);
-            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+            _userinterface.OnPowerPressed(this, EventArgs.Empty);
+            _userinterface.OnTimePressed(this, EventArgs.Empty);
+            _userinterface.OnStartCancelPressed(this, EventArgs.Empty);
             _output.ClearReceivedCalls();
 
-            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+            _userinterface.OnStartCancelPressed(this, EventArgs.Empty);
 
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"PowerTube turned off")));
         }
@@ -74,18 +75,18 @@ namespace Microwave.Test.Integration
         [Test]
         public void onDoorOpened_setCookingState_Output()
         {
-            _uut.OnPowerPressed(this, EventArgs.Empty);
-            _uut.OnTimePressed(this, EventArgs.Empty);
-            _uut.OnStartCancelPressed(this, EventArgs.Empty);
+            _userinterface.OnPowerPressed(this, EventArgs.Empty);
+            _userinterface.OnTimePressed(this, EventArgs.Empty);
+            _userinterface.OnStartCancelPressed(this, EventArgs.Empty);
             _output.ClearReceivedCalls();
 
-            _uut.OnDoorOpened(this, EventArgs.Empty);
+            _userinterface.OnDoorOpened(this, EventArgs.Empty);
 
             _output.Received(1).OutputLine(Arg.Is<string>(s => s.Contains($"PowerTube turned off")));
           
         }
 
-
+        //Mangler at teste cookingisdone.
 
 
 
